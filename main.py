@@ -10,7 +10,7 @@ def load_config(file_path):
 
 async def scan_for_devices():
     devices = await BleakScanner.discover(return_adv=True)
-    ids_yaml = load_config('company_identifiers.yaml')
+    ids_yaml = load_config('./public/assigned_numbers/company_identifiers/company_identifiers.yaml')
     # print(ids_yaml['company_identifiers'])
     sum = 0
     for k, v in devices.items():
