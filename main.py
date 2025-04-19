@@ -1,4 +1,4 @@
-mport asyncio
+import asyncio
 import yaml
 from bleak import BleakScanner
 from charset_normalizer import detect
