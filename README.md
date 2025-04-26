@@ -1,2 +1,2 @@
-# bluetooth-in-room-notice
-Using Bluetooth on the RaspberryPi, it senses if someone is in the room and notifies you.
+# People-in-room-notice
+Presence confirmation service using WiFi cameras and AI.
