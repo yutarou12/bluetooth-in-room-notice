@@ -12,7 +12,6 @@ def load_yolo_model(model_path='yolov5s.pt'):
     return model
 
 
-# 使用例
 model = load_yolo_model()
 print(f"モデルがロードされました: {model}")
 
@@ -38,4 +37,3 @@ async def detect_video(m, video_source):
     cap.release()
 
 asyncio.run(detect_video(model, os.getenv('VIDEO_PATH')))
-# detect_video(model, os.getenv('VIDEO_PATH'))
