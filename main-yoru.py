@@ -19,7 +19,7 @@ print(f"モデルがロードされました: {model}")
 async def detect_video(m, video_source):
     cap = cv2.VideoCapture(video_source)
     while True:
-        await asyncio.sleep(5)
+        await asyncio.sleep(60 * 1)
         ret, frame = cap.read()
         if not ret:
             break
