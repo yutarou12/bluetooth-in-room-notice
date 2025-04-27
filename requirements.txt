@@ -5,3 +5,6 @@ opencv-python
 numpy
 matplotlib
 python-dotenv
+fastapi
+requests
+uvicorn
