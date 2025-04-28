@@ -73,4 +73,4 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
                 return {"message": "Already notified"}
 
 if __name__ == "__main__":
-    uvicorn.run("main_api:app", host="0.0.0.0", port=9000, log_level="debug", reload=True)
+    uvicorn.run("main_api:app", host=os.getenv("API_HOST", "0.0.0.0"), port=int(os.getenv("API_PORT", "9000")), log_level="debug", reload=True)

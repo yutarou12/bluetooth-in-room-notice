@@ -40,12 +40,13 @@ async def detect_video(m, video_source):
                 "Authorization": f"Bearer {os.getenv('API_TOKEN')}",
                 "Content-Type": "application/json"
             }
+            url = f"http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api/webhooks"
             if pople_count > 0:
-                requests.post('http://localhost:9000/api/webhooks', json={"room_in": True}, headers=headers)
+                requests.post(url, json={"room_in": True}, headers=headers)
                 zero_count = 0
             else:
                 if zero_count == 5:
-                    requests.post('http://localhost:9000/api/webhooks', json={"room_in": False}, headers=headers)
+                    requests.post(url, json={"room_in": False}, headers=headers)
                     zero_count = 0
                 else:
                     zero_count += 1
