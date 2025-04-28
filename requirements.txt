@@ -1,5 +1,3 @@
-bleak
-pyyaml
 ultralytics
 opencv-python
 numpy
