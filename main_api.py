@@ -38,13 +38,13 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
 
     # debug
     if os.path.exists("./tmp/room-img.png"):
-        payload = {
+        payload = json.dumps({
+            "username": "[DEBUG] 在室確認",
             "content": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+        })
         with open("./tmp/room-img.png", "rb") as f:
-            multiple_files = {"files[0]": ("room-img.jpg", f)}
-            headers = {"Content-Type": "multipart/form-data"}
-            debug_res = requests.post(os.getenv("DISCORD_WEBHOOK_URL"), json={"payload_json": payload}, files=multiple_files, headers=headers)
+            multiple_files = {"attachment", ("room-img.jpg", f)}
+            debug_res = requests.post(os.getenv("DISCORD_WEBHOOK_URL"), json={"payload_json": payload}, files=multiple_files)
             print(debug_res.status_code)
 
     if item.room_in:
