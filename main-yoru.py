@@ -52,6 +52,7 @@ async def detect_video(m, video_source):
                     zero_count += 1
 
             print(f"人数: {pople_count}")
+            cv2.imwrite("./tmp/room-img.png", frame)
         except Exception as e:
             print(f"エラー: {e}")
             continue

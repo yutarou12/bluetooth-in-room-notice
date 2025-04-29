@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 
@@ -34,6 +35,14 @@ def verify_token(token: str = Depends(oauth2_scheme)):
 async def notice_room(item: PostItem, token: str = Depends(verify_token)):
     with open("./data/people_count.json", encoding="utf-8") as f:
         data = json.load(f)
+
+    # debug
+    if os.path.exists("./tmp/room-img.png"):
+        payload = {"content": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        with open("./tmp/room-img.png", "rb") as f:
+            multiple_files = [("files[0]", ("room-img.jpg", f), "image/png")]
+            debug_res = requests.post(os.getenv("DISCORD_WEBHOOK_URL"), data={"payload_json": json.dumps(payload)}, files=multiple_files)
+            print(debug_res.status_code)
 
     if item.room_in:
         if not data.get("RoomIn"):
