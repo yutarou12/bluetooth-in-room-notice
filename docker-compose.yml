@@ -21,6 +21,9 @@ services:
     build:
       context: "."
       dockerfile: "Dockerfile-Yoru"
+    depends_on:
+      api:
+        condition: service_started
     container_name: "yoru"
     environment:
       API_TOKEN: ${API_TOKEN}
