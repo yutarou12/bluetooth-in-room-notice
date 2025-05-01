@@ -23,6 +23,7 @@ async def detect_video(m, video_source):
     while True:
         try:
             frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            print(frame_count)
             fps = int(cap.get(cv2.CAP_PROP_FPS))
             for idx in range(1, frame_count, round(fps*60)):
                 cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
