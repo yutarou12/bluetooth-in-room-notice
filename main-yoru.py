@@ -57,7 +57,7 @@ def detect_video(m, z):
 
 async def loop_detect_video():
     zero_count = 0
-    schedule.every(1).minutes.do(detect_video(model, zero_count))
+    schedule.every(1).minutes.do(detect_video, m=model, z=zero_count)
     while True:
         schedule.run_pending()
         time.sleep(1)
