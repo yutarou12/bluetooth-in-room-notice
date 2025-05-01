@@ -26,30 +26,33 @@ def detect_video(m, z):
     ret, frame = cap.read()
     if not ret:
         print("no ret")
-        return False
-    results = m(frame)
-    pople_count = 0
-    for r in results:
-        boxes = r.boxes
-        for box in boxes:
-            if box.cls[0] == 0:
-                pople_count += 1
-                x1, y1, x2, y2 = box.xyxy[0]
-                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-
-    cv2.imwrite("./tmp/room-img.png", frame)
-    headers = {
-        "Authorization": f"Bearer {os.getenv('API_TOKEN')}",
-        "Content-Type": "application/json"
-    }
-    url = f"http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api/webhooks"
-    if pople_count > 0:
-        requests.post(url, json={"room_in": True}, headers=headers)
     else:
-        if z == 5:
-            requests.post(url, json={"room_in": False}, headers=headers)
+        try:
+            results = m(frame)
+            pople_count = 0
+            for r in results:
+                boxes = r.boxes
+                for box in boxes:
+                    if box.cls[0] == 0:
+                        pople_count += 1
+                        x1, y1, x2, y2 = box.xyxy[0]
+                        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
 
-    print(f"人数: {pople_count}")
+            cv2.imwrite("./tmp/room-img.png", frame)
+            headers = {
+                "Authorization": f"Bearer {os.getenv('API_TOKEN')}",
+                "Content-Type": "application/json"
+            }
+            url = f"http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api/webhooks"
+            if pople_count > 0:
+                requests.post(url, json={"room_in": True}, headers=headers)
+            else:
+                if z == 5:
+                    requests.post(url, json={"room_in": False}, headers=headers)
+
+            print(f"人数: {pople_count}")
+        except Exception as e:
+            print(f"エラー：{e}")
 
 
 async def loop_detect_video():
