@@ -19,10 +19,8 @@ model = load_yolo_model()
 print(f"モデルがロードされました: {model}")
 
 
-cap = cv2.VideoCapture(os.getenv('VIDEO_PATH'))
-
-
 def detect_video(m, z):
+    cap = cv2.VideoCapture(os.getenv('VIDEO_PATH'))
     ret, frame = cap.read()
     if not ret:
         print("no ret")
