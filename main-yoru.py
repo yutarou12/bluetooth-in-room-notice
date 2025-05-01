@@ -22,7 +22,7 @@ print(f"モデルがロードされました: {model}")
 cap = cv2.VideoCapture(os.getenv('VIDEO_PATH'))
 
 
-def detect_video(m, z):
+async def detect_video(m, z):
     ret, frame = cap.read()
     if not ret:
         print("no ret")
