@@ -65,8 +65,13 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
                 data["RoomIn"] = True
                 data["InRoomAlreadyNotice"] = True
                 data["NoRoomAlreadyNotice"] = False
-                with open("./data/people_count.json", "w", encoding="utf-8") as f:
-                    json.dump(data, f, ensure_ascii=False, indent=4)
+                print(f'[{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] 書き込み前')
+                try:
+                    with open("./data/people_count.json", "w", encoding="utf-8") as f:
+                        json.dump(data, f, ensure_ascii=False, indent=4)
+                except Exception as e:
+                    print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Error writing to file: {e}")
+                print(f'[{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}] 書き込み後')
             else:
                 return {"message": "Already notified"}
     else:
