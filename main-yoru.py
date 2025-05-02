@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def load_yolo_model(model_path='yolov5s.pt'):
+def load_yolo_model(model_path='yolov8s.pt'):
     model = YOLO(model_path)
     return model
 
