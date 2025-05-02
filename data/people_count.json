@@ -1,6 +1,5 @@
 {
     "RoomIn": false,
     "InRoomAlreadyNotice": false,
-    "NoRoomAlreadyNotice": false,
-    "RoomCount": 0
+    "NoRoomAlreadyNotice": false
 }

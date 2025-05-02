@@ -23,7 +23,7 @@ print(f"モデルがロードされました: {model}")
 
 def detect_video(m):
     date_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open("./data/people_count.json", encoding="utf-8") as f:
+    with open("./data/room_count.json", encoding="utf-8") as f:
         data = json.load(f)
 
     room_count = data.get("RoomCount")
@@ -59,7 +59,7 @@ def detect_video(m):
                 else:
                     room_count += 1
 
-            with open("./data/people_count.json", "w", encoding="utf-8") as f:
+            with open("./data/room_count.json", "w", encoding="utf-8") as f:
                 data["RoomCount"] = room_count
                 json.dump(data, f, ensure_ascii=False, indent=4)
 

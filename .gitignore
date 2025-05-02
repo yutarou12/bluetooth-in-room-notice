@@ -175,5 +175,5 @@ cython_debug/
 
 .idea/
 yolov*
-data/people_count.json
+data/*
 tmp/
