@@ -1,4 +1,6 @@
 import asyncio
+import datetime
+import json
 import os
 import time
 
@@ -19,11 +21,16 @@ model = load_yolo_model()
 print(f"モデルがロードされました: {model}")
 
 
-def detect_video(m, z):
+def detect_video(m):
+    date_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open("./data/people_count.json", encoding="utf-8") as f:
+        data = json.load(f)
+
+    room_count = data.get("RoomCount")
     cap = cv2.VideoCapture(os.getenv('VIDEO_PATH'))
     ret, frame = cap.read()
     if not ret:
-        print("no ret")
+        print(f"[{date_now}] no ret")
     else:
         try:
             results = m(frame)
@@ -44,23 +51,27 @@ def detect_video(m, z):
             url = f"http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api/webhooks"
             if pople_count > 0:
                 requests.post(url, json={"room_in": True}, headers=headers)
+                room_count = 0
             else:
-                if z == 5:
+                if room_count == 5:
                     requests.post(url, json={"room_in": False}, headers=headers)
+                    room_count = 0
+                else:
+                    room_count += 1
 
-            print(f"人数: {pople_count}")
+            with open("./data/people_count.json", "w", encoding="utf-8") as f:
+                data["RoomCount"] = room_count
+                json.dump(data, f, ensure_ascii=False, indent=4)
+
+            print(f"[{date_now}] 人数: {pople_count}")
         except Exception as e:
-            print(f"エラー：{e}")
+            print(f"[{date_now}] エラー：{e}")
 
 
 async def loop_detect_video():
-    zero_count = 0
-    schedule.every(1).minutes.do(detect_video, m=model, z=zero_count)
+    schedule.every(1).minutes.do(detect_video, m=model)
     while True:
         schedule.run_pending()
         time.sleep(1)
-        zero_count += 1
-        if zero_count == 6:
-            zero_count = 0
 
 asyncio.run(loop_detect_video())

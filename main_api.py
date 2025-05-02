@@ -44,9 +44,12 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
         })
         with open("./tmp/room-img.png", "rb") as f:
             multiple_files = [{"attachment", ("room-img.jpg", f)}]
-            debug_res = requests.post(os.getenv("DISCORD_WEBHOOK_URL"), data={"payload_json": payload},
-                                      files=multiple_files)
-            print(debug_res.text)
+            try:
+                debug_res = requests.post(os.getenv("DISCORD_WEBHOOK_URL"), data={"payload_json": payload},
+                                          files=multiple_files)
+                print(debug_res.content)
+            except Exception as e:
+                print(f"Error sending debug image: {e}")
 
     if item.room_in:
         if not data.get("RoomIn"):
