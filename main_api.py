@@ -50,6 +50,11 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
             except Exception as e:
                 print(f"Error sending debug image: {e}")
 
+    # 0時から6時までの間は通知しない
+    now_time = (datetime.datetime.now() + datetime.timedelta(hours=9)).hour
+    if now_time in [22, 23, 0, 1, 2, 3, 4, 5, 6]:
+        return {"message": "No notification during this time"}
+
     if item.room_in:
         if not data.get("RoomIn"):
             if not data.get("InRoomAlreadyNotice"):
