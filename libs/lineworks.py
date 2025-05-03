@@ -4,6 +4,8 @@ import jwt
 from datetime import datetime
 
 import requests
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
 
 BASE_API_URL = "https://www.worksapis.com/v1.0"
 BASE_AUTH_URL = "https://auth.worksmobile.com/oauth2/v2.0"
@@ -11,7 +13,17 @@ BASE_AUTH_URL = "https://auth.worksmobile.com/oauth2/v2.0"
 
 class LineWorksAPI:
     def __init__(self):
+        self.privatekey = self.load_privkey("./key/private_20250503130913.key")
         super().__init__()
+
+    def load_privkey(self, filename):
+        with open(filename, 'rb') as fpr:
+            privkey = serialization.load_pem_private_key(
+                fpr.read(),
+                password=None,
+                backend=default_backend()
+            )
+        return privkey
 
     def get_jwt(self, client_id, service_account_id, privatekey):
         """アクセストークンのためのJWT取得
@@ -86,8 +98,7 @@ class LineWorksAPI:
 
         r = self.get_list_boards(access_token)
         if not r["response_code"] == 200:
-            print(r["body"])
-            raise Exception("掲示板の取得に失敗しました")
+            return {"response_code": r["response_code"], "body": r["body"]}
 
         with open("./data/lineworks_id_list.json", "r", encoding="utf-8") as f:
             json_file_data = json.load(f)
@@ -102,7 +113,7 @@ class LineWorksAPI:
                     json_file_data["RoomInfoBoardId"] = board["boardId"]
                     json.dump(json_file_data, f, ensure_ascii=False, indent=4)
 
-        return True
+        return {"response_code": 200, "body": "success"}
 
     def register_board_post(self, access_token, board_id, content):
         """掲示板に投稿を登録する"""
