@@ -17,3 +17,6 @@ LW_API_20_PRIVATEKEY: str = os.getenv("LW_API_20_PRIVATEKEY")
 LW_API_20_BOT_ID: str = os.getenv("LW_API_20_BOT_ID")
 LW_API_20_BOT_SECRET: str = os.getenv("LW_API_20_BOT_SECRET")
 LW_API_20_CHANNEL_ID: str = os.getenv("LW_API_20_CHANNEL_ID")
+
+PHOTO_ID_OPEN: str = os.getenv("PHOTO_ID_OPEN")
+PHOTO_ID_CLOSE: str = os.getenv("PHOTO_ID_CLOSE")
