@@ -7,3 +7,5 @@ fastapi
 requests
 uvicorn
 schedule
+pyjwt
+cryptography
