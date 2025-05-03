@@ -71,7 +71,7 @@ def post_lineworks_board(room_bool: bool):
         board_id = json_file_data.get("RoomInfoBoardId")
 
         content = {
-            "title": "委員会室・在室情報",
+            "title": "部室開放状況（リアルタイム）",
             "body": f'<img class="lnk_img _wh_img" src="https://lh3.googleusercontent.com/d/{photo_id}" border="0" data-file-type="png" width="400" data-image-ratio="0.71" data-image-scale="SCALE_SMALL" data-image-border="false" style="border:0px;max-width:100%;cursor:pointer;vertical-align:text-bottom">',
             "sendNotifications": False
         }
@@ -91,7 +91,7 @@ def post_lineworks_board(room_bool: bool):
     response = lineworks.get_board_post(access_token, board_id, post_id)
 
     content = {
-        "title": "委員会室・在室情報",
+        "title": "部室開放状況（リアルタイム）",
         "body": f'<img class="lnk_img _wh_img" src="https://lh3.googleusercontent.com/d/{photo_id}" border="0" data-file-type="png" width="400" data-image-ratio="0.71" data-image-scale="SCALE_SMALL" data-image-border="false" style="border:0px;max-width:100%;cursor:pointer;vertical-align:text-bottom">',
         "sendNotifications": False
     }
