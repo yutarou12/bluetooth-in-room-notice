@@ -8,9 +8,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
-from dotenv import load_dotenv
-
-load_dotenv()
+import libs.env as env
 
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -21,7 +19,7 @@ class PostItem(BaseModel):
 
 
 def verify_token(token: str = Depends(oauth2_scheme)):
-    if token != os.getenv('API_TOKEN'):
+    if token != env.API_TOKEN:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
@@ -45,7 +43,7 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
         with open("./tmp/room-img.png", "rb") as f:
             multiple_files = [{"attachment", ("room-img.jpg", f)}]
             try:
-                requests.post(os.getenv("DISCORD_WEBHOOK_URL"), data={"payload_json": payload},
+                requests.post(env.DISCORD_WEBHOOK_URL, data={"payload_json": payload},
                               files=multiple_files)
             except Exception as e:
                 print(f"Error sending debug image: {e}")
@@ -64,7 +62,7 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
                     "username": "在室通知",
                     "content": "## 在室"
                 }
-                requests.post(os.getenv('DISCORD_WEBHOOK_URL'), json=post_content)
+                requests.post(env.DISCORD_WEBHOOK_URL, json=post_content)
 
                 data["RoomIn"] = True
                 data["InRoomAlreadyNotice"] = True
@@ -87,7 +85,7 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
                     "username": "在室通知",
                     "content": "## 空室"
                 }
-                requests.post(os.getenv('DISCORD_WEBHOOK_URL'), json=post_content)
+                requests.post(env.DISCORD_WEBHOOK_URL, json=post_content)
 
                 data["RoomIn"] = False
                 data["InRoomAlreadyNotice"] = False
@@ -98,4 +96,4 @@ async def notice_room(item: PostItem, token: str = Depends(verify_token)):
                 return {"message": "Already notified"}
 
 if __name__ == "__main__":
-    uvicorn.run("main_api:app", host=os.getenv("API_HOST", "0.0.0.0"), port=int(os.getenv("API_PORT", "9000")), log_level="debug")
+    uvicorn.run("main_api:app", host=env.API_HOST, port=env.API_PORT, log_level="debug")

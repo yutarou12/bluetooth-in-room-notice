@@ -1,15 +1,14 @@
 import asyncio
 import datetime
 import json
-import os
 import time
 
 import cv2
 import requests
 import schedule
 from ultralytics import YOLO
-from dotenv import load_dotenv
-load_dotenv()
+
+import libs.env as env
 
 
 def load_yolo_model(model_path='yolov8s.pt'):
@@ -27,7 +26,7 @@ def detect_video(m):
         data = json.load(f)
 
     room_count = data.get("RoomCount")
-    cap = cv2.VideoCapture(os.getenv('VIDEO_PATH'))
+    cap = cv2.VideoCapture(env.VIDEO_PATH)
     ret, frame = cap.read()
     if not ret:
         print(f"[{date_now}] no ret")
@@ -45,10 +44,10 @@ def detect_video(m):
 
             cv2.imwrite("./tmp/room-img.png", frame)
             headers = {
-                "Authorization": f"Bearer {os.getenv('API_TOKEN')}",
+                "Authorization": f"Bearer {env.API_TOKEN}",
                 "Content-Type": "application/json"
             }
-            url = f"http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api/webhooks"
+            url = f"http://{env.API_HOST}:{env.API_PORT}/api/webhooks"
             if pople_count > 0:
                 requests.post(url, json={"room_in": True}, headers=headers)
                 room_count = 0
